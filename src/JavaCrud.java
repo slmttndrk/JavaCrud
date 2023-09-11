@@ -1,10 +1,7 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class JavaCrud {
     private JPanel Main;
@@ -13,8 +10,9 @@ public class JavaCrud {
     private JButton saveButton;
     private JButton deleteButton;
     private JButton updateButton;
-    private JTextField textField4;
+    private JTextField txtpid;
     private JTextField txtQty;
+    private JButton searchButton;
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("JavaCrud");
@@ -55,6 +53,38 @@ public class JavaCrud {
                     e1.printStackTrace();
                 }
 
+            }
+        });
+        searchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    String pid = txtpid.getText();
+
+                    pst = con.prepareStatement("select pname, price, qty from products where pid = ?");
+                    pst.setString(1, pid);
+                    ResultSet rs = pst.executeQuery();
+
+                    if (rs.next() == true) {
+                        String name = rs.getString(1);
+                        String price = rs.getString(2);
+                        String qty = rs.getString(3);
+
+                        txtName.setText(name);
+                        txtPrice.setText(price);
+                        txtQty.setText(qty);
+                    }
+                    else {
+                        txtName.setText("");
+                        txtPrice.setText("");
+                        txtQty.setText("");
+
+                        JOptionPane.showMessageDialog(null, "Invalid Product ID!");
+
+                    }
+                }catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
             }
         });
     }
