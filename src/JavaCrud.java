@@ -87,6 +87,36 @@ public class JavaCrud {
                 }
             }
         });
+        updateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String name, price, qty, pid;
+
+                name = txtName.getText();
+                price = txtPrice.getText();
+                qty = txtQty.getText();
+                pid = txtpid.getText();
+
+                try {
+                    pst = con.prepareStatement("update products set pname = ?, price = ?, qty = ? where pid = ?");
+                    pst.setString(1, name);
+                    pst.setString(2, price);
+                    pst.setString(3, qty);
+                    pst.setString(4, pid);
+                    pst.executeUpdate();
+
+                    JOptionPane.showMessageDialog(null, "Record is updated!");
+
+                    txtName.setText("");
+                    txtPrice.setText("");
+                    txtQty.setText("");
+                    txtpid.setText("");
+                    txtName.requestFocus();
+                }catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
     }
 
     public void Connect() {
