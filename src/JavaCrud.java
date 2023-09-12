@@ -117,6 +117,28 @@ public class JavaCrud {
                 }
             }
         });
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String pid;
+                pid = txtpid.getText();
+
+                try {
+                    pst = con.prepareStatement("delete from products where pid=?");
+                    pst.setString(1,pid);
+                    pst.executeUpdate();
+
+                    JOptionPane.showMessageDialog(null, "Record is deleted!");
+
+                    txtName.setText("");
+                    txtPrice.setText("");
+                    txtQty.setText("");
+                    txtpid.setText("");
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
     }
 
     public void Connect() {
